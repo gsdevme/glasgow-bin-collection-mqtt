@@ -1,0 +1,36 @@
+{
+    "type": "project",
+    "license": "proprietary",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8",
+        "fabpot/goutte": "^4.0",
+        "php-mqtt/client": "^1.0",
+        "psr/log": "^1.1",
+        "symfony/console": "^5.2",
+        "symfony/http-client": "^5"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.12.71",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6",
+        "slevomat/coding-standard": "^6.4",
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Gsdev\\GlasgowWasteCollection\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gsdev\\GlasgowWasteCollection\\Tests\\": "tests/"
+        }
+    }
+}

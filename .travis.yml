@@ -1,0 +1,32 @@
+language: minimal
+
+notifications:
+  email:
+    recipients:
+      - travis-notification-wedding-4821@gsdev.me
+    on_success: never
+    on_failure: always
+
+cache:
+  directories:
+    - /home/travis/.composer/cache
+
+jobs:
+  include:
+    -   name: "php 8.0"
+
+services:
+  - docker
+
+# Install the latest (at the time) docker-compose
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+before_script:
+  - make build
+
+script:
+  - make ci

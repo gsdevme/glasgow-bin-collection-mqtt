@@ -1,0 +1,12 @@
+version: '2.4'
+
+services:
+  php:
+    image: 'glasgow-bin-collection-mqtt:ci'
+    build:
+      context: .
+      dockerfile: ./infrastructure/php/Dockerfile
+      target: ci
+    environment:
+      - APP_ENV=dev
+    volumes: [ ]

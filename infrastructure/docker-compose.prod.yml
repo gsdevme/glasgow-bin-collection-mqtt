@@ -1,0 +1,13 @@
+version: '2.4'
+
+services:
+  php:
+    image: 'gsdevme/glasgow-bin-collection-mqtt:${tag}'
+    build:
+      context: .
+      dockerfile: ./infrastructure/php/Dockerfile
+      target: prod
+    environment:
+      - APP_ENV=prod
+
+

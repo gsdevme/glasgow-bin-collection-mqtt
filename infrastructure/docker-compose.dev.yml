@@ -1,0 +1,19 @@
+version: '2.4'
+
+services:
+  php:
+    image: 'glasgow-bin-collection-mqtt:dev'
+    build:
+      context: .
+      dockerfile: ./infrastructure/php/Dockerfile
+      target: dev
+    environment:
+      - APP_ENV=dev
+    volumes:
+      - './:/srv/app/:cached'
+      - /srv/app/vendor
+      # to allow composer to function inside the container
+      - ~/.ssh:/root/.ssh:ro
+      - ~/.ssh:/var/www/.ssh:ro
+      - ~/.composer:/var/www/.composer
+
