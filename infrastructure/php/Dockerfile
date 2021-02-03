@@ -37,7 +37,6 @@ FROM base as build
 
 COPY composer.json /srv/app/composer.json
 COPY composer.lock /srv/app/composer.lock
-COPY .env /srv/app/.env
 COPY phpstan.neon /srv/app/phpstan.neon
 COPY ruleset.xml /srv/app/ruleset.xml
 COPY src/ /srv/app/src
