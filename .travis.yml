@@ -3,7 +3,7 @@ language: minimal
 notifications:
   email:
     recipients:
-      - travis-notification-wedding-4821@gsdev.me
+      - travis-notification-glasgow-mqtt-4821@gsdev.me
     on_success: never
     on_failure: always
 
