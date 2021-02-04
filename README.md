@@ -13,13 +13,36 @@ https://www.glasgow.gov.uk/forms/refuseandrecyclingcalendar/AddressSearch.aspx
 - Ability to run a container
 - MQTT Server & Your Glasgow Council Bin ID (UPRN), you can grab this from the online form in the URL
 
-## Basic Container Workflow
+### Basic Container Workflow
 
 ```bash
 docker run -it --name glasgow-bin-collection --rm \
  -e MQTT_HOST=<ip>> \
  -e GLASGOW_COUNCIL_ID=<id>> \
  gsdevme/glasgow-bin-collection-mqtt:1.0.0
+```
+
+### Kubernetes
+
+```yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: glasgow-bin-collection-cron
+spec:
+  schedule: "0 7 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: glasgow-bin-collection
+              image: gsdevme/glasgow-bin-collection-mqtt:1.0.0
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - configMapRef:
+                    name: glasgow-bin-config
+          restartPolicy: OnFailure
 ```
 
 ## Home Assistant
