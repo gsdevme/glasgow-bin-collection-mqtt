@@ -9,7 +9,7 @@ class Bins implements \JsonSerializable, \Countable, \IteratorAggregate
     public const EXPECTED_NUMBER_OF_BINS = 4;
 
     /**
-     * @var array<int, Bin>
+     * @var array<mixed, Bin>
      */
     private array $bins;
 

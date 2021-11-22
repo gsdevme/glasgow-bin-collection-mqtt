@@ -53,7 +53,7 @@ shell:
 	docker-compose \
 		-f infrastructure/docker-compose.yml \
 		-f infrastructure/docker-compose.dev.yml \
-		--project-directory $(CURDIR) exec php bash
+		--project-directory $(CURDIR) exec php /bin/sh
 
 logs:
 	docker-compose \

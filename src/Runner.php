@@ -33,7 +33,7 @@ class Runner
 
         $id = intval(getenv('GLASGOW_COUNCIL_ID'));
 
-        if (empty($mqttHost) || $id <= 0) {
+        if (empty($id) || $id <= 0) {
             $this->output->writeln('GLASGOW_COUNCIL_ID ENV not set or not a number');
 
             exit(1);
@@ -41,7 +41,8 @@ class Runner
 
         $fetchAndStore = new FetchAndStoreBinCollectionDays(
             new GoutteBinRepository($logger),
-            new MqttPublisher($mqttHost)
+            new MqttPublisher($mqttHost),
+            $logger
         );
         $result = $fetchAndStore($id);
 
