@@ -19,7 +19,7 @@ https://www.glasgow.gov.uk/forms/refuseandrecyclingcalendar/AddressSearch.aspx
 docker run -it --name glasgow-bin-collection --rm \
  -e MQTT_HOST=<ip>> \
  -e GLASGOW_COUNCIL_ID=<id>> \
- gsdevme/glasgow-bin-collection-mqtt:1.0.0
+ gsdevme/glasgow-bin-collection-mqtt:latest
 ```
 
 ### Kubernetes
@@ -37,7 +37,7 @@ spec:
         spec:
           containers:
             - name: glasgow-bin-collection
-              image: gsdevme/glasgow-bin-collection-mqtt:1.0.0
+              image: gsdevme/glasgow-bin-collection-mqtt:latest
               imagePullPolicy: IfNotPresent
               envFrom:
                 - configMapRef:
