@@ -54,7 +54,6 @@ class GoutteBinRepository implements BinRepositoryInterface
                     "Your next %s Bin day is %s %s %s %d. %s Bins are emptied every %d days"
                 );
 
-
                 if (!is_array($bin) || count($bin) === 6) {
                     return false;
                 }

@@ -6,6 +6,8 @@ namespace Gsdev\GlasgowWasteCollection\Service;
 
 use Gsdev\GlasgowWasteCollection\Publish\PublisherInterface;
 use Gsdev\GlasgowWasteCollection\Repository\BinRepositoryInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class FetchAndStoreBinCollectionDays
 {
@@ -13,10 +15,16 @@ class FetchAndStoreBinCollectionDays
 
     private PublisherInterface $publisher;
 
-    public function __construct(BinRepositoryInterface $binRepository, PublisherInterface $publisher)
-    {
+    private LoggerInterface $logger;
+
+    public function __construct(
+        BinRepositoryInterface $binRepository,
+        PublisherInterface $publisher,
+        ?LoggerInterface $logger = null
+    ) {
         $this->binRepository = $binRepository;
         $this->publisher = $publisher;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     public function __invoke(int $id): bool
@@ -24,6 +32,8 @@ class FetchAndStoreBinCollectionDays
         $bins = $this->binRepository->findAll($id);
 
         if (!$bins->hasExpectedAmountOfBins()) {
+            $this->logger->error(sprintf('Unexpected number of bins returned, got %d', $bins->count()));
+
             return false;
         }
 
