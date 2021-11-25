@@ -18,15 +18,18 @@ class GoutteBinRepository implements BinRepositoryInterface
 
     private LoggerInterface $logger;
 
-    public function __construct(?LoggerInterface $logger = null)
+    private string $url;
+
+    public function __construct(?LoggerInterface $logger = null, ?string $url = null)
     {
+        $this->url = $url ?: self::URL;
         $this->logger = $logger ?: new NullLogger();
     }
 
     public function findAll(int $id): Bins
     {
         try {
-            $crawler = $this->getClient()->request('GET', sprintf(self::URL, $id));
+            $crawler = $this->getClient()->request('GET', sprintf($this->url, $id));
             $crawler = $crawler->filter('.Fieldset > ul > li');
 
             if ($crawler->count() <=> Bins::EXPECTED_NUMBER_OF_BINS) {
@@ -49,22 +52,43 @@ class GoutteBinRepository implements BinRepositoryInterface
 
         $bins = $crawler->each(
             static function (Crawler $node) {
-                $bin = sscanf(
-                    $node->text(),
-                    "Your next %s Bin day is %s %s %s %d. %s Bins are emptied every %d days"
-                );
+                switch (true) {
+                    case stripos($node->text(), 'Tomorrow'):
+                        $bin = sscanf(
+                            $node->text(),
+                            "Your next %s Bin day is Tomorrow. %s Bins are emptied every %d days."
+                        );
 
-                if (!is_array($bin) || count($bin) === 6) {
-                    return false;
+                        if (!is_array($bin) || count($bin) !== 3) {
+                            return false;
+                        }
+
+                        $colour = strval($bin[0]);
+
+                        $date = new \DateTime('tomorrow', new \DateTimeZone('Europe/London'));
+                        $cycle = intval($bin[2]);
+
+                        break;
+                    default:
+                        $bin = sscanf(
+                            $node->text(),
+                            "Your next %s Bin day is %s %s %s %d. %s Bins are emptied every %d days"
+                        );
+
+                        if (!is_array($bin) || count($bin) === 6) {
+                            return false;
+                        }
+
+                        $colour = strval($bin[0]);
+
+                        $date = \DateTime::createFromFormat(
+                            'l jS F Y G:i',
+                            sprintf('%s %s %s %d 08:00', $bin[1], $bin[2], $bin[3], $bin[4]),
+                            new \DateTimeZone('Europe/London')
+                        );
+                        $cycle = intval($bin[6]);
+                        break;
                 }
-
-                $colour = strval($bin[0]);
-                $date = \DateTime::createFromFormat(
-                    'l jS F Y G:i',
-                    sprintf('%s %s %s %d 08:00', $bin[1], $bin[2], $bin[3], $bin[4]),
-                    new \DateTimeZone('Europe/London')
-                );
-                $cycle = intval($bin[6]);
 
                 if (!$date instanceof \DateTimeInterface) {
                     return false;

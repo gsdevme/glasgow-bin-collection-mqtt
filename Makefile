@@ -21,6 +21,7 @@ ci:
 run-ci:
 	vendor/bin/phpstan analyse -l 8 src/
 	vendor/bin/phpcs --colors --standard=ruleset.xml src/
+	vendor/bin/phpunit
 
 build-prod:
 	docker-compose \
