@@ -23,7 +23,7 @@ class Bins implements \JsonSerializable, \Countable, \IteratorAggregate
         return $this->count() === self::EXPECTED_NUMBER_OF_BINS;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->bins);
     }
@@ -33,7 +33,7 @@ class Bins implements \JsonSerializable, \Countable, \IteratorAggregate
         return count($this->bins);
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->bins;
     }
