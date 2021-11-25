@@ -24,7 +24,7 @@ class Bin implements \JsonSerializable
         return $this->name;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'name' => $this->name,
