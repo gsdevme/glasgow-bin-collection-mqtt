@@ -1,4 +1,4 @@
-FROM php:8.1-rc-cli-alpine as base
+FROM php:8.1-cli-alpine as base
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
